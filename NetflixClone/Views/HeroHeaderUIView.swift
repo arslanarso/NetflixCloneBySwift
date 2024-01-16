@@ -32,6 +32,33 @@ class HeroHeaderUIView: UIView {
         button.layer.cornerRadius = 5
         return button
     }()
+    
+    private let headerText: UILabel = {
+        let label = UILabel()
+        
+        let fullText = """
+        Mauro Icardi
+        Adına şarkılar yazıldı, okunan şarkılar ona yorumlandı. Tüm Türkiye'ye ezberlettiği şarkıyı şimdi Avrupa'ya dinletme zamanı...
+        """
+        
+        let boldText = "Mauro Icardi"
+        let italicText = "Adına şarkılar yazıldı, okunan şarkılar ona yorumlandı. Tüm Türkiye'ye ezberlettiği şarkıyı şimdi Avrupa'ya dinletme zamanı..."
+        
+        let attributedString = NSMutableAttributedString(string: fullText)
+        let range = (fullText as NSString).range(of: boldText)
+        let rangeForItalic = (fullText as NSString).range(of: italicText)
+        
+        
+        attributedString.addAttributes([.font: UIFont.boldSystemFont(ofSize:40)], range: range)
+        attributedString.addAttributes([.font: UIFont.italicSystemFont(ofSize:16)], range: rangeForItalic)
+        
+        label.attributedText = attributedString
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+
 
     private let heroImageView : UIImageView = {
         let imageView = UIImageView()
@@ -55,6 +82,7 @@ class HeroHeaderUIView: UIView {
         super.init(frame: frame)
         addSubview(heroImageView)
         addGradient()
+        addSubview(headerText)
         addSubview(playButton)
         addSubview(downloadButton)
         applyConstraints()
@@ -76,8 +104,15 @@ class HeroHeaderUIView: UIView {
             downloadButton.widthAnchor.constraint(equalTo: downloadButton.titleLabel!.widthAnchor, constant: 2 * padding)
             
         ]
+
         
-        NSLayoutConstraint.activate(playButtonContraints + downloadButtonConstraints)
+        let headerTextConstraints = [
+            headerText.widthAnchor.constraint(equalToConstant: 300),
+            headerText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            headerText.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -295)
+        ]
+        
+        NSLayoutConstraint.activate(headerTextConstraints + playButtonContraints + downloadButtonConstraints)
 
     }
     
